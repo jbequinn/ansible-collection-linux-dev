@@ -1,0 +1,56 @@
+- name: Checking if Gradle is already installed
+  stat:
+    path: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version }}'
+  register: gradle_installed
+
+- name: delete gradle directory
+  file:
+    path: '{{ gradle_home_parent_directory }}/'
+    state: absent
+  when: not gradle_installed.stat.exists
+
+- name: Create gradle lib directory if it does not exist
+  file:
+    path: '{{ gradle_home_parent_directory }}'
+    state: directory
+    mode: '0755'
+  when: not gradle_installed.stat.exists
+
+- name: Downloading Gradle Binaries for version '{{ gradle_version }}'
+  get_url:
+    url: '{{ gradle_download_url }}'
+    dest: '{{ gradle_home_parent_directory }}/{{ gradle_file_name }}'
+  when: not gradle_installed.stat.exists
+
+- name: Unarchive Gradle Binaries
+  unarchive:
+    src: '{{ gradle_home_parent_directory }}/{{ gradle_file_name }}'
+    dest: '{{ gradle_home_parent_directory }}'
+    copy: no
+  when: not gradle_installed.stat.exists
+
+- name: Remove Gradle symlink
+  ignore_errors: yes
+  file:
+    path: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version[:1] }}'
+    state: absent
+  when: not gradle_installed.stat.exists
+
+- name: Create a symbolic link
+  file:
+    src: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version }}'
+    dest: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version[:1] }}'
+    owner: root
+    group: root
+    state: link
+
+- name: Create Gradle alternative
+  alternatives:
+    name: gradle
+    link: /usr/bin/gradle
+    path: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version[:1] }}/bin/gradle'
+
+- name: Cleaning Up
+  file:
+    state: absent
+    path: '{{ gradle_home_parent_directory }}/{{ gradle_file_name }}'

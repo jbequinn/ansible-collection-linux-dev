@@ -1,0 +1,70 @@
+- name: Checking if Adoptium is already installed
+  stat:
+    path: '{{ adoptium_home_parent_directory }}/jdk-{{ java_version }}'
+  register: adoptium_installed
+
+- name: Delete Adoptium symlink
+  file:
+    path: '{{ adoptium_home_parent_directory }}/jdk-{{ java_version[:2] }}'
+    state: absent
+  when: not adoptium_installed.stat.exists
+
+- name: Find old Adoptium directories
+  find:
+    paths: '{{ adoptium_home_parent_directory }}/'
+    file_type: directory
+    patterns: 'jdk-{{ java_version[:2] }}*'
+  register: directories_to_delete
+  when: not adoptium_installed.stat.exists
+
+- name: Delete Adoptium directories
+  file:
+    path: '{{ item.path }}'
+    state: absent
+  with_items: '{{ directories_to_delete.files }}'
+  when: not adoptium_installed.stat.exists and directories_to_delete.files is iterable
+
+- name: Create Adoptium lib directory if it does not exist
+  file:
+    path: '{{ adoptium_home_parent_directory }}'
+    state: directory
+    mode: '0755'
+  when: not adoptium_installed.stat.exists
+
+- name: Download Adoptium Binaries for version '{{ java_version }}'
+  get_url:
+    url: '{{ adoptium_download_url }}'
+    dest: '{{ adoptium_home_parent_directory }}/{{ adoptium_file_name }}'
+  when: not adoptium_installed.stat.exists
+
+- name: Unarchive Adoptium Binaries
+  unarchive:
+    src: '{{ adoptium_home_parent_directory }}/{{ adoptium_file_name }}'
+    dest: '{{ adoptium_home_parent_directory }}'
+    copy: no
+  when: not adoptium_installed.stat.exists
+
+- name: Create a symbolic link
+  file:
+    src: '{{ adoptium_home_parent_directory }}/jdk-{{ java_version }}'
+    dest: '{{ adoptium_home_parent_directory }}/jdk-{{ java_version[:2] }}'
+    owner: root
+    group: root
+    state: link
+
+- name: Updata java alterntives
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: '/usr/lib/jvm/jdk-{{ java_version[:2] }}/bin/java'
+
+- name: Update javac alternatives
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: '/usr/lib/jvm/jdk-{{ java_version[:2] }}/bin/javac'
+
+- name: Cleaning Up
+  file:
+    state: absent
+    path: '{{ adoptium_home_parent_directory }}/{{ adoptium_file_name }}'

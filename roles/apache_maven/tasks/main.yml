@@ -1,0 +1,55 @@
+- name: Checking if Maven is already installed
+  stat:
+    path: '{{ maven_home_parent_directory }}/apache-maven-{{ maven_version }}'
+  register: maven_installed
+
+- name: Delete Maven directory
+  file:
+    path: '{{ maven_home_parent_directory }}/'
+    state: absent
+  when: not maven_installed.stat.exists
+
+- name: Create Maven lib directory if it does not exist
+  file:
+    path: '{{ maven_home_parent_directory }}'
+    state: directory
+    mode: '0755'
+  when: not maven_installed.stat.exists
+
+- name: Downloading Maven Binaries for version '{{ maven_version }}'
+  get_url:
+    url: '{{ maven_download_url }}'
+    dest: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
+  when: not maven_installed.stat.exists
+
+- name: Unarchive Maven Binaries
+  unarchive:
+    src: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
+    dest: '{{ maven_home_parent_directory }}'
+    copy: no
+  when: not maven_installed.stat.exists
+
+- name: Remove Maven symlink
+  file:
+    path: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}'
+    state: absent
+  when: not maven_installed.stat.exists
+
+- name: Create a symbolic link
+  file:
+    src: '{{ maven_home_parent_directory }}/apache-maven-{{ maven_version }}'
+    dest: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}'
+    owner: root
+    group: root
+    state: link
+
+- name: Create Maven alternative
+  alternatives:
+    name: mvn
+    link: /usr/bin/mvn
+    path: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}/bin/mvn'
+
+- name: Cleaning Up
+  file:
+    state: absent
+    path: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'

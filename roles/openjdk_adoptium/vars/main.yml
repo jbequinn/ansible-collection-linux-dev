@@ -1,0 +1,6 @@
+adoptium_home_parent_directory: /usr/lib/jvm
+version_urlencoded: '{{ java_version | urlencode() }}'
+version_underscore: '{{ java_version | replace("+", "_") }}'
+
+adoptium_file_name: 'OpenJDK{{ java_version[:2] }}U-jdk_x64_linux_hotspot_{{ version_underscore }}.tar.gz'
+adoptium_download_url: 'https://github.com/adoptium/temurin{{ java_version[:2] }}-binaries/releases/download/jdk-{{ version_urlencoded }}/OpenJDK{{ java_version[:2] }}U-jdk_x64_linux_hotspot_{{ version_underscore }}.tar.gz'
