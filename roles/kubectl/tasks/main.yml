@@ -1,0 +1,8 @@
+---
+- name: Import platform specific tasks
+  include_tasks: "kubectl-{{ ansible_os_family }}.yml"
+
+- name: Install kubectl
+  package:
+    name: kubectl
+    state: present

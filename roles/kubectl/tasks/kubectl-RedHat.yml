@@ -1,0 +1,5 @@
+---
+- name: Create the RPM repository
+  copy:
+    path: kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
