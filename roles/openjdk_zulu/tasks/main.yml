@@ -1,0 +1,20 @@
+---
+- name: Import platform specific tasks
+  include_tasks: "tasks-{{ ansible_os_family }}.yml"
+
+- name: 'Install package {{ java_package }}'
+  package:
+    name: '{{ java_package }}'
+    state: present
+
+- name: Updata 'java' alternatives
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: '/usr/lib/jvm/zulu{{ java_version }}/bin/java'
+
+- name: Update 'javac' alternatives
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: '/usr/lib/jvm/zulu{{ java_version }}/bin/javac'

@@ -1,0 +1,10 @@
+---
+- name: Create the Zulu RPM Repo
+  copy:
+    src: yum.repo
+    dest: /etc/yum.repos.d/zulu-openjdk.repo
+
+- name: Import Zulu key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://www.azul.com/wp-content/uploads/2021/05/0xB1998361219BD9C9.txt

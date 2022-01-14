@@ -1,0 +1,17 @@
+---
+- name: Ensure required packages are present
+  package:
+    name: gnupg, curl
+    state: present
+
+- name: Add Zulu apt key by id from a keyserver
+  ansible.builtin.apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 27BC0C8CB3D81623F59BDADCB1998361219BD9C9
+
+- name: Set up the repository for Azul
+  apt_repository:
+    repo: 'deb [ arch=amd64,arm64 ] https://repos.azul.com/zulu/deb/ stable main'
+    filename: zulu-openjdk.list
+    state: present
+    update_cache: yes

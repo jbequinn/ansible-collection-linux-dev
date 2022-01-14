@@ -1,0 +1,2 @@
+java_version: '17'
+java_package: 'zulu{{ java_version }}-ca-jdk-headless'
