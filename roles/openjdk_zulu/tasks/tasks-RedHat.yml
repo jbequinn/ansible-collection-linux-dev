@@ -3,6 +3,9 @@
   copy:
     src: yum.repo
     dest: /etc/yum.repos.d/zulu-openjdk.repo
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
 
 - name: Import Zulu key
   ansible.builtin.rpm_key:

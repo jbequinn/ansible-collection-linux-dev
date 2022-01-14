@@ -26,11 +26,10 @@
   unarchive:
     src: '{{ gradle_home_parent_directory }}/{{ gradle_file_name }}'
     dest: '{{ gradle_home_parent_directory }}'
-    copy: no
+    copy: false
   when: not gradle_installed.stat.exists
 
 - name: Remove Gradle symlink
-  ignore_errors: yes
   file:
     path: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version[:1] }}'
     state: absent

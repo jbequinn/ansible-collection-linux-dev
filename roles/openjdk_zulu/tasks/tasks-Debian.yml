@@ -14,4 +14,4 @@
     repo: 'deb [ arch=amd64,arm64 ] https://repos.azul.com/zulu/deb/ stable main'
     filename: zulu-openjdk.list
     state: present
-    update_cache: yes
+    update_cache: true

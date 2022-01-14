@@ -2,7 +2,7 @@
 - name: Install Required packages
   ansible.builtin.package:
     name:
-    - python3
+      - python3
     state: present
 
 - name: Create a temporary directory to download the AWS CLI bundle
@@ -15,7 +15,7 @@
   ansible.builtin.unarchive:
     src: 'https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_architecture }}.zip'
     dest: /tmp/awscli/
-    remote_src: yes
+    remote_src: true
 
 - name: Install AWS CLI
   ansible.builtin.shell: /tmp/awscli/aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
@@ -25,7 +25,7 @@
     path: '/home/{{ ansible_user }}/.aws'
     state: directory
     mode: '0755'
-  become: no
+  become: false
 
 - name: Install the Session Manager plugin
   apt:

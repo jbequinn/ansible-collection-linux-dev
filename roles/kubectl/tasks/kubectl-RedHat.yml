@@ -3,3 +3,6 @@
   copy:
     path: kubernetes.repo
     dest: /etc/yum.repos.d/kubernetes.repo
+    owner: 'root'
+    group: 'root'
+    mode: '0644'

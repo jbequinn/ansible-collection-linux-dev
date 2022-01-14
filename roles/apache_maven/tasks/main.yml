@@ -26,7 +26,7 @@
   unarchive:
     src: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
     dest: '{{ maven_home_parent_directory }}'
-    copy: no
+    copy: false
   when: not maven_installed.stat.exists
 
 - name: Remove Maven symlink

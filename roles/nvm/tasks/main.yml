@@ -1,6 +1,6 @@
 - name: Download nvm script
   get_url:
-    url:  'https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh'
+    url: 'https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh'
     dest: /tmp/install.sh
     mode: 0755
 
