@@ -2,9 +2,9 @@
 - name: Import platform specific tasks
   include_tasks: "tasks-{{ ansible_os_family }}.yml"
 
-- name: 'Install package {{ java_package }}'
+- name: 'Installing java packages'
   package:
-    name: '{{ java_package }}'
+    name: '{{ java_packages }}'
     state: present
 
 - name: Updata 'java' alternatives
