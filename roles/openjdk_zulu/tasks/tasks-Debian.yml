@@ -12,6 +12,6 @@
 - name: Set up the repository for Azul
   apt_repository:
     repo: 'deb [ arch=amd64,arm64 ] https://repos.azul.com/zulu/deb/ stable main'
-    filename: zulu-openjdk.list
+    filename: zulu-openjdk
     state: present
     update_cache: true
