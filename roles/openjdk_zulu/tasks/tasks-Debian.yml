@@ -1,17 +1,18 @@
 ---
-- name: Ensure required packages are present
+- name: Install packages to allow apt to use a repository over HTTPS
   package:
-    name: gnupg, curl
+    name: ca-certificates, curl, gnupg
     state: present
 
-- name: Add Zulu apt key by id from a keyserver
-  ansible.builtin.apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: 27BC0C8CB3D81623F59BDADCB1998361219BD9C9
+- name: Add Azul GPG key
+  apt_key:
+    url: 'https://www.azul.com/wp-content/uploads/2021/05/0xB1998361219BD9C9.txt'
+    keyring: /usr/share/keyrings/azul-keyring.gpg
+    state: present
 
 - name: Set up the repository for Azul
   apt_repository:
-    repo: 'deb [ arch=amd64,arm64 ] https://repos.azul.com/zulu/deb/ stable main'
-    filename: zulu-openjdk
+    repo: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/azul-keyring.gpg] https://repos.azul.com/zulu/deb/ stable main'
     state: present
+    filename: azul-zulu
     update_cache: true
