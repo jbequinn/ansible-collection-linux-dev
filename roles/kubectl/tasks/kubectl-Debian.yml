@@ -14,4 +14,5 @@
   apt_repository:
     repo: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
     state: present
+    filename: kubernetes
     update_cache: true
