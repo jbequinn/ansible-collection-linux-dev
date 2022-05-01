@@ -1,42 +1,42 @@
 - name: Checking if Maven is already installed
-  stat:
+  ansible.builtin.stat:
     path: '{{ maven_home_parent_directory }}/apache-maven-{{ maven_version }}'
   register: maven_installed
 
 - name: Delete Maven directory
-  file:
+  ansible.builtin.file:
     path: '{{ maven_home_parent_directory }}/'
     state: absent
   when: not maven_installed.stat.exists
 
 - name: Create Maven lib directory if it does not exist
-  file:
+  ansible.builtin.file:
     path: '{{ maven_home_parent_directory }}'
     state: directory
     mode: '0755'
   when: not maven_installed.stat.exists
 
 - name: Downloading Maven Binaries for version '{{ maven_version }}'
-  get_url:
+  ansible.builtin.get_url:
     url: '{{ maven_download_url }}'
     dest: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
   when: not maven_installed.stat.exists
 
 - name: Unarchive Maven Binaries
-  unarchive:
+  ansible.builtin.unarchive:
     src: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
     dest: '{{ maven_home_parent_directory }}'
     copy: false
   when: not maven_installed.stat.exists
 
 - name: Remove Maven symlink
-  file:
+  ansible.builtin.file:
     path: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}'
     state: absent
   when: not maven_installed.stat.exists
 
 - name: Create a symbolic link
-  file:
+  ansible.builtin.file:
     src: '{{ maven_home_parent_directory }}/apache-maven-{{ maven_version }}'
     dest: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}'
     owner: root
@@ -50,6 +50,6 @@
     path: '{{ maven_home_parent_directory }}/maven-{{ maven_version[:1] }}/bin/mvn'
 
 - name: Cleaning Up
-  file:
+  ansible.builtin.file:
     state: absent
     path: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'

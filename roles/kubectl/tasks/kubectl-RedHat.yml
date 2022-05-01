@@ -1,6 +1,6 @@
 ---
 - name: Create the RPM repository
-  copy:
+  ansible.builtin.copy:
     path: kubernetes.repo
     dest: /etc/yum.repos.d/kubernetes.repo
     owner: 'root'

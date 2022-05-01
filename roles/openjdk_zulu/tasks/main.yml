@@ -3,7 +3,7 @@
   include_tasks: "tasks-{{ ansible_os_family }}.yml"
 
 - name: 'Installing java packages'
-  package:
+  ansible.builtin.package:
     name: '{{ java_packages }}'
     state: present
 

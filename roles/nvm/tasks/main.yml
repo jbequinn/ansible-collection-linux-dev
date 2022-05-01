@@ -1,15 +1,15 @@
 - name: Download nvm script
-  get_url:
+  ansible.builtin.get_url:
     url: 'https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh'
     dest: /tmp/install.sh
     mode: 0755
 
 - name: Install nvm
-  shell: /tmp/install.sh
+  ansible.builtin.command: /tmp/install.sh
   args:
     creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
 - name: Cleanup
-  file:
+  ansible.builtin.file:
     path: /tmp/install.sh
     state: absent

@@ -1,6 +1,6 @@
 ---
 - name: Create the Zulu RPM Repo
-  copy:
+  ansible.builtin.copy:
     src: yum.repo
     dest: /etc/yum.repos.d/zulu-openjdk.repo
     owner: 'root'

@@ -1,17 +1,17 @@
 ---
 - name: Ensure system is set up to work with https sources
-  package:
+  ansible.builtin.package:
     name: apt-transport-https, ca-certificates, curl
     state: present
 
 - name: Install the apt GPG key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     keyring: /usr/share/keyrings/kubernetes-archive-keyring.gpg
     state: present
 
 - name: Set up the repository for kubernetes
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main'
     state: present
     filename: kubernetes

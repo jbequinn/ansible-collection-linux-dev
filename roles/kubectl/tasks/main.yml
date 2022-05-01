@@ -3,6 +3,6 @@
   include_tasks: "kubectl-{{ ansible_os_family }}.yml"
 
 - name: Install kubectl
-  package:
+  ansible.builtin.package:
     name: kubectl
     state: present
