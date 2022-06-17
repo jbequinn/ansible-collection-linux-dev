@@ -1,0 +1,12 @@
+---
+- name: Update 'java' alternatives
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: '/usr/lib/jvm/temurin-{{ java_version }}-jdk/bin/java'
+
+- name: Update 'javac' alternatives
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: '/usr/lib/jvm/temurin-{{ java_version }}-jdk/bin/javac'

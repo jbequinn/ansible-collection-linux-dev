@@ -1,0 +1,13 @@
+---
+- name: Create the Adptium RPM Repo
+  template:
+    src: yum.repo.j2
+    dest: /etc/yum.repos.d/adoptium.repo
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: Install the RPM GPG key
+  rpm_key:
+    key: https://packages.adoptium.net/artifactory/api/gpg/key/public
+    state: present
