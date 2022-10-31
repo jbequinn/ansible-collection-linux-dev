@@ -5,13 +5,13 @@
   ignore_errors: true
 
 - name: Update 'java' alternatives
-  alternatives:
+  community.general.alternatives:
     name: java
     link: /usr/bin/java
     path: '/usr/lib/jvm/temurin-{{ java_version }}-jdk-{{ adoptium_architecture.stdout }}/bin/java'
 
 - name: Update 'javac' alternatives
-  alternatives:
+  community.general.alternatives:
     name: javac
     link: /usr/bin/javac
     path: '/usr/lib/jvm/temurin-{{ java_version }}-jdk-{{ adoptium_architecture.stdout }}/bin/javac'

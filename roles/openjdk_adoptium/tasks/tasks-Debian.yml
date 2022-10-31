@@ -1,6 +1,6 @@
 ---
 - name: Ensure the necessary packages are present
-  package:
+  ansible.builtin.package:
     name: apt-transport-https, gnupg
     state: present
 

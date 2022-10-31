@@ -1,27 +1,27 @@
 ---
 # https://blog.adoptium.net/2021/12/eclipse-temurin-linux-installers-available/
 - name: Set os distribution for Ubuntu systems
-  set_fact:
+  ansible.builtin.set_fact:
     adoptium_os: ubuntu
   when: ansible_distribution == 'Pop!_OS' or ansible_distribution == 'Ubuntu'
 
 - name: Set os distribution for Debian systems
-  set_fact:
+  ansible.builtin.set_fact:
     adoptium_os: debian
   when: ansible_distribution == 'Debian'
 
 - name: Set os distribution for Fedora systems
-  set_fact:
+  ansible.builtin.set_fact:
     adoptium_os: fedora
   when: ansible_distribution == 'Fedora'
 
 - name: Import platform specific tasks
-  include_tasks: "tasks-{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "tasks-{{ ansible_os_family }}.yml"
 
 - name: Install Temurin
-  package:
+  ansible.builtin.package:
     name: 'temurin-{{ java_version }}-jdk'
     state: present
 
 - name: Import platform specific update alternatives
-  include_tasks: "tasks-alternatives-{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "tasks-alternatives-{{ ansible_os_family }}.yml"

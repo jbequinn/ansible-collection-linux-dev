@@ -1,6 +1,6 @@
 ---
-- name: Create the Adptium RPM Repo
-  template:
+- name: Create the Adoptium RPM Repo
+  ansible.builtin.template:
     src: yum.repo.j2
     dest: /etc/yum.repos.d/adoptium.repo
     owner: 'root'
@@ -8,6 +8,6 @@
     mode: '0644'
 
 - name: Install the RPM GPG key
-  rpm_key:
+  ansible.builtin.rpm_key:
     key: https://packages.adoptium.net/artifactory/api/gpg/key/public
     state: present
