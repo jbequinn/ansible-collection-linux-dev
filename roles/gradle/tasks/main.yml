@@ -3,7 +3,7 @@
     path: '{{ gradle_home_parent_directory }}/gradle-{{ gradle_version }}'
   register: gradle_installed
 
-- name: delete gradle directory
+- name: Delete gradle directory
   ansible.builtin.file:
     path: '{{ gradle_home_parent_directory }}/'
     state: absent
