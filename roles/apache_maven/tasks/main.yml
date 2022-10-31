@@ -20,6 +20,9 @@
   ansible.builtin.get_url:
     url: '{{ maven_download_url }}'
     dest: '{{ maven_home_parent_directory }}/{{ maven_file_name }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
   when: not maven_installed.stat.exists
 
 - name: Unarchive Maven Binaries
