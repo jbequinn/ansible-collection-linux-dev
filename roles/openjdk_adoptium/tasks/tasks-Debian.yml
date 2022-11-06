@@ -5,14 +5,14 @@
     state: present
 
 - name: Download the Eclipse Adoptium GPG key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: 'https://packages.adoptium.net/artifactory/api/gpg/key/public'
-    keyring: /usr/share/keyrings/adoptium-keyring.gpg
-    state: present
+    dest: /etc/apt/trusted.gpg.d/adoptium-keyring.asc
+    mode: '0644'
 
 - name: Configure the Eclipse Adoptium apt repository
   ansible.builtin.apt_repository:
-    repo: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/adoptium-keyring.gpg] https://packages.adoptium.net/artifactory/deb {{ ansible_distribution_release }} main'
+    repo: 'deb [ arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/adoptium-keyring.asc] https://packages.adoptium.net/artifactory/deb {{ ansible_distribution_release }} main'
     state: present
     filename: adoptium
     update_cache: true

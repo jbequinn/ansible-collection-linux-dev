@@ -5,14 +5,14 @@
     state: present
 
 - name: Add Azul GPG key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: 'https://www.azul.com/wp-content/uploads/2021/05/0xB1998361219BD9C9.txt'
-    keyring: /usr/share/keyrings/azul-keyring.gpg
-    state: present
+    dest: /etc/apt/trusted.gpg.d/azul-keyring.asc
+    mode: '0644'
 
 - name: Set up the repository for Azul
   ansible.builtin.apt_repository:
-    repo: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/azul-keyring.gpg] https://repos.azul.com/zulu/deb/ stable main'
+    repo: 'deb [ arch=amd64,arm64 signed-by=/etc/apt/trusted.gpg.d/azul-keyring.asc] https://repos.azul.com/zulu/deb/ stable main'
     state: present
     filename: azul-zulu
     update_cache: true
