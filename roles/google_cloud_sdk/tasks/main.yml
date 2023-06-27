@@ -1,0 +1,23 @@
+---
+- name: Ensure system is set up to work with https sources
+  ansible.builtin.package:
+    name: apt-transport-https, ca-certificates, curl
+    state: present
+
+- name: Install the apt GPG key
+  ansible.builtin.get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /etc/apt/trusted.gpg.d/cloud.google.asc
+    mode: '0644'
+
+- name: Set up the repository Google Cloud SDK
+  ansible.builtin.apt_repository:
+    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main'
+    state: present
+    filename: google-cloud-sdk
+    update_cache: true
+
+- name: Install Google Cloud SDK
+  ansible.builtin.package:
+    name: google-cloud-cli google-cloud-cli-gke-gcloud-auth-plugin
+    state: present
