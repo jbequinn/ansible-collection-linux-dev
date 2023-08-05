@@ -19,5 +19,7 @@
 
 - name: Install Google Cloud SDK
   ansible.builtin.package:
-    name: google-cloud-cli google-cloud-cli-gke-gcloud-auth-plugin
+    name:
+      - google-cloud-cli
+      - google-cloud-cli-gke-gcloud-auth-plugin
     state: present
