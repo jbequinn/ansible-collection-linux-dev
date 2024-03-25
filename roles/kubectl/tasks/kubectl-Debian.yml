@@ -6,13 +6,13 @@
 
 - name: Install the apt GPG key
   ansible.builtin.get_url:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: /etc/apt/trusted.gpg.d/kubernetes-archive-keyring.asc
+    url: 'https://pkgs.k8s.io/core:/stable:/{{ kubernetes_version }}/deb/Release.key'
+    dest: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.asc
     mode: '0644'
 
 - name: Set up the repository for kubernetes
   ansible.builtin.apt_repository:
-    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-archive-keyring.asc] https://apt.kubernetes.io/ kubernetes-xenial main'
+    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/{{ kubernetes_version }}/deb/ /'
     state: present
     filename: kubernetes
     update_cache: true
